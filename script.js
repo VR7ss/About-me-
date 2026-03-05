@@ -2,55 +2,37 @@
 const splash = document.getElementById('splash-screen');
 const mainContent = document.getElementById('main-content');
 const enterBtn = document.getElementById('enter-btn');
-const viewerSpan = document.getElementById('viewer-count');
 const audio = document.getElementById('my-audio');
-const currentTimeSpan = document.getElementById('current-time');
-const durationSpan = document.getElementById('duration');
 
-// 1. تفعيل زر الدخول
+// إخفاء شاشة الدخول وإظهار المحتوى عند النقر
 enterBtn.addEventListener('click', () => {
     splash.style.display = 'none';
-    mainContent.style.display = 'block';
-    updateViewerCount();
+    mainContent.style.display = 'flex'; // flex لأنه في CSS المحتوى main-content يستخدم flex
+    
+    // زيادة عدد المشاهدات (اختياري)
+    updateViews();
 });
 
-// 2. عدّاد المشاهدات
-function updateViewerCount() {
-    let count = localStorage.getItem('viewerCount') || 0;
-    count = Number(count) + 1;
-    localStorage.setItem('viewerCount', count);
-    viewerSpan.textContent = count;
-}
-
-// 3. دوال مشغل الصوت
+// دوال تشغيل الموسيقى
 function playAudio() {
-    audio.play().catch(error => {
-        console.log("تعذر تشغيل الصوت:", error);
-        alert("لم نتمكن من تشغيل الصوت. يرجى التأكد من أن الرابط لملف صوتي صالح.");
-    });
+    audio.play().catch(e => console.log("صوت ما شغل", e));
 }
 
 function pauseAudio() {
     audio.pause();
 }
 
-// 4. تحديث وقت الصوت (اختياري - إذا أردت الوقت الحقيقي)
-audio.addEventListener('loadedmetadata', () => {
-    const duration = formatTime(audio.duration);
-    durationSpan.textContent = duration;
-});
-
-audio.addEventListener('timeupdate', () => {
-    const current = formatTime(audio.currentTime);
-    currentTimeSpan.textContent = current;
-});
-
-function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+// عداد المشاهدات (يحفظ العدد)
+function updateViews() {
+    const viewsElement = document.querySelector('.views');
+    let views = localStorage.getItem('vr7_views') || 893;
+    views = Number(views) + 1;
+    localStorage.setItem('vr7_views', views);
+    viewsElement.textContent = views;
 }
 
-// تعيين القيم الافتراضية للوقت (كما في الصورة)
-currentTimeSpan.textContent = '0:01';
-durationSpan.textContent = '2:44';
+// تعيين الوقت (نفس الموقع الأصلي)
+window.onload = function() {
+    // الوقت ثابت زي الموقع الأصلي
+    console.log('موقع VR7 جاهز');
+}

@@ -1,164 +1,208 @@
-/* ============================================
-   Bio Page — Script
-   Audio Engine, Splash, Particles, Music Player
-   ============================================ */
-
 document.addEventListener('DOMContentLoaded', () => {
-
-    // ---- DOM Elements ----
     const splash = document.getElementById('splash');
     const enterBtn = document.getElementById('enterBtn');
-    const musicToggle = document.getElementById('musicToggle');
     const bgMusic = document.getElementById('bgMusic');
-    const particlesContainer = document.getElementById('particles');
-
-    // Music Player Elements
+    const musicToggle = document.getElementById('musicToggle');
+    const musicIcon = musicToggle.querySelector('i');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const playPauseIcon = document.getElementById('playPauseIcon');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const trackName = document.getElementById('trackName');
     const progressFill = document.getElementById('progressFill');
     const timeCurrent = document.getElementById('timeCurrent');
     const timeTotal = document.getElementById('timeTotal');
-    const progressBar = document.querySelector('.progress-bar');
+    const bgVideo = document.getElementById('bgVideo');
 
-    // ---- Fade-in Elements ----
-    const fadeElements = document.querySelectorAll('.fade-element');
+    let isMusicPlaying = false;
+    let currentTrackIndex = 0;
+    const tracks = [
+        { name: 'Track 1', src: '1m.mp3' }, // Assuming 1m.mp3 is the first track
+        // Add more tracks here if available
+    ];
 
-    // ============================================
-    // FLOATING PARTICLES GENERATOR
-    // ============================================
-    function createParticles(count) {
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + 'vw';
-            const size = Math.random() * 3 + 2;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-            particle.style.opacity = Math.random() * 0.5 + 0.2;
-            const duration = Math.random() * 12 + 8;
-            particle.style.animationDuration = duration + 's';
-            const delay = Math.random() * 15;
-            particle.style.animationDelay = delay + 's';
-            particlesContainer.appendChild(particle);
-        }
+    // Function to play video and handle potential autoplay issues
+    const playVideo = (videoElement) => {
+        videoElement.muted = true;
+        videoElement.play().catch(error => {
+            console.log('Video autoplay failed:', error);
+            // Fallback for browsers that block autoplay even with muted
+            // You might want to show a play button to the user here
+        });
+    };
+
+    // Initial video play attempt
+    document.querySelectorAll('video').forEach(playVideo);
+
+    // Play video on user interaction (for some mobile browsers)
+    document.addEventListener('click', () => {
+        document.querySelectorAll('video').forEach(playVideo);
+    }, { once: true });
+
+    // Splash screen logic
+    if (enterBtn) {
+        enterBtn.addEventListener('click', () => {
+            if (splash) {
+                splash.classList.add('hidden'); // Add a class to hide the splash screen
+                // Optionally, remove the splash screen from DOM after animation
+                splash.addEventListener('transitionend', () => splash.remove());
+            }
+            // Start background music if not already playing
+            if (!isMusicPlaying) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-volume-up');
+                    playPauseIcon.classList.remove('fa-play');
+                    playPauseIcon.classList.add('fa-pause');
+                }).catch(error => {
+                    console.log('Music autoplay failed:', error);
+                    // Handle cases where music autoplay is blocked
+                    isMusicPlaying = false;
+                    musicIcon.classList.remove('fa-volume-up');
+                    musicIcon.classList.add('fa-volume-mute');
+                    playPauseIcon.classList.remove('fa-pause');
+                    playPauseIcon.classList.add('fa-play');
+                });
+            }
+        });
     }
 
-    createParticles(40);
+    // Music toggle logic
+    if (musicToggle) {
+        musicToggle.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-volume-up');
+                    playPauseIcon.classList.remove('fa-play');
+                    playPauseIcon.classList.add('fa-pause');
+                }).catch(error => {
+                    console.log('Music play failed on toggle:', error);
+                    isMusicPlaying = false;
+                    musicIcon.classList.remove('fa-volume-up');
+                    musicIcon.classList.add('fa-volume-mute');
+                    playPauseIcon.classList.remove('fa-pause');
+                    playPauseIcon.classList.add('fa-play');
+                });
+            } else {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+            }
+        });
+    }
 
-    // ============================================
-    // SPLASH SCREEN → ENTER
-    // ============================================
-    enterBtn.addEventListener('click', () => {
-        splash.classList.add('hidden');
-
-        bgMusic.volume = 0.4;
-        const playPromise = bgMusic.play();
-
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                musicToggle.classList.add('playing');
-                musicToggle.classList.remove('muted');
-                playPauseIcon.className = 'fas fa-pause';
-            }).catch(() => {
-                musicToggle.classList.add('muted');
-                musicToggle.classList.remove('playing');
-                playPauseIcon.className = 'fas fa-play';
-            });
+    // Music player controls
+    const loadTrack = (index) => {
+        if (tracks[index]) {
+            bgMusic.src = tracks[index].src;
+            trackName.textContent = tracks[index].name;
+            if (isMusicPlaying) {
+                bgMusic.play();
+            } else {
+                bgMusic.load(); // Load the track without playing
+            }
         }
+    };
 
-        musicToggle.classList.add('visible');
-        triggerFadeIns();
-    });
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+                isMusicPlaying = true;
+            } else {
+                bgMusic.pause();
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+                isMusicPlaying = false;
+            }
+            // Sync music toggle icon with play/pause state
+            if (isMusicPlaying) {
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            } else {
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            }
+        });
+    }
 
-    // ============================================
-    // MUSIC TOGGLE (Volume Icon — Mute/Unmute)
-    // ============================================
-    musicToggle.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.play().then(() => {
-                musicToggle.classList.add('playing');
-                musicToggle.classList.remove('muted');
-                musicToggle.querySelector('i').className = 'fas fa-volume-up';
-                playPauseIcon.className = 'fas fa-pause';
-            }).catch(() => { });
-            return;
-        }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadTrack(currentTrackIndex);
+        });
+    }
 
-        bgMusic.muted = !bgMusic.muted;
-
-        if (bgMusic.muted) {
-            musicToggle.classList.add('muted');
-            musicToggle.classList.remove('playing');
-            musicToggle.querySelector('i').className = 'fas fa-volume-mute';
-        } else {
-            musicToggle.classList.remove('muted');
-            musicToggle.classList.add('playing');
-            musicToggle.querySelector('i').className = 'fas fa-volume-up';
-        }
-    });
-
-    // ============================================
-    // MUSIC PLAYER CONTROLS
-    // ============================================
-
-    // Play / Pause Button
-    playPauseBtn.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.play().then(() => {
-                playPauseIcon.className = 'fas fa-pause';
-                musicToggle.classList.add('playing');
-                musicToggle.classList.remove('muted');
-                musicToggle.querySelector('i').className = 'fas fa-volume-up';
-            }).catch(() => { });
-        } else {
-            bgMusic.pause();
-            playPauseIcon.className = 'fas fa-play';
-            musicToggle.classList.remove('playing');
-        }
-    });
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(currentTrackIndex);
+        });
+    }
 
     // Update progress bar and time
     bgMusic.addEventListener('timeupdate', () => {
-        if (bgMusic.duration) {
-            const percent = (bgMusic.currentTime / bgMusic.duration) * 100;
-            progressFill.style.width = percent + '%';
-            timeCurrent.textContent = formatTime(bgMusic.currentTime);
+        const progress = (bgMusic.currentTime / bgMusic.duration) * 100;
+        progressFill.style.width = `${progress}%`;
+
+        const formatTime = (seconds) => {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        };
+
+        timeCurrent.textContent = formatTime(bgMusic.currentTime);
+        if (!isNaN(bgMusic.duration)) {
+            timeTotal.textContent = formatTime(bgMusic.duration);
         }
     });
 
-    // Set total time when metadata loads
-    bgMusic.addEventListener('loadedmetadata', () => {
-        timeTotal.textContent = formatTime(bgMusic.duration);
+    bgMusic.addEventListener('ended', () => {
+        // Play next track automatically or loop current track
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadTrack(currentTrackIndex);
     });
 
-    // Click on progress bar to seek
-    if (progressBar) {
-        progressBar.addEventListener('click', (e) => {
-            const rect = progressBar.getBoundingClientRect();
-            // RTL layout: right side is start
-            const clickX = rect.right - e.clientX;
-            const percent = clickX / rect.width;
-            bgMusic.currentTime = percent * bgMusic.duration;
+    // Initial track load
+    loadTrack(currentTrackIndex);
+
+    // Handle fade-in elements
+    const fadeElements = document.querySelectorAll('.fade-element');
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
         });
-    }
+    }, observerOptions);
 
-    // Format seconds to m:ss
-    function formatTime(seconds) {
-        if (isNaN(seconds)) return '0:00';
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return mins + ':' + (secs < 10 ? '0' : '') + secs;
-    }
+    fadeElements.forEach(element => {
+        observer.observe(element);
+    });
 
-    // ============================================
-    // FADE-IN ANIMATION ENGINE
-    // ============================================
-    function triggerFadeIns() {
-        fadeElements.forEach((el, index) => {
-            setTimeout(() => {
-                el.classList.add('visible');
-            }, 150 + (index * 120));
-        });
-    }
-
+    // Add a CSS class to hide the splash screen initially
+    const style = document.createElement('style');
+    style.textContent = `
+        .splash.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+    `;
+    document.head.append(style);
 });

@@ -56,7 +56,7 @@
             <div class="profile-header fade-element">
                 <div class="avatar-ring">
                     <div class="avatar">
-                        <img src="افتاري.jpg" alt="صورتي">
+                        <img src="avatar.jpg" alt="صورتي">
                     </div>
                 </div>
                 <div class="profile-info">
@@ -113,7 +113,7 @@
             <div class="music-player fade-element">
                 <div class="player-info">
                     <div class="player-avatar">
-                        <img src="افتاري.jpg" alt="track">
+                        <img src="avatar.jpg" alt="track">
                     </div>
                     <div class="player-text">
                         <span class="track-name" id="trackName">not allowed</span>
@@ -138,22 +138,6 @@
     </main>
 
     <script src="script.js"></script>
-    <script>
-        // Force video autoplay on all browsers
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('video').forEach(function (v) {
-                v.muted = true;
-                v.play().catch(function () { });
-            });
-        });
-        // Also try on user interaction (needed for some mobile browsers)
-        document.addEventListener('click', function () {
-            document.querySelectorAll('video').forEach(function (v) {
-                v.muted = true;
-                v.play().catch(function () { });
-            });
-        }, { once: true });
-    </script>
 </body>
 
 </html>

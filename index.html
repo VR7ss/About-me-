@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm dryfd</title>
+<meta name="description" content="dryfd">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="splash">
+
+<video class="splash-bg"
+autoplay
+loop
+muted
+playsinline
+preload="auto">
+
+<source src="1v.mp4" type="video/mp4">
+
+</video>
+
+<div class="splash-content">
+<span id="enterBtn" class="splash-text">click to enter...</span>
+</div>
+
+</div>
+
+
+<!-- BACKGROUND VIDEO -->
+<div class="bg-layer">
+
+<video
+id="bgVideo"
+class="bg-image"
+autoplay
+loop
+muted
+playsinline
+preload="auto">
+
+<source src="1v.mp4" type="video/mp4">
+
+</video>
+
+</div>
+
+
+<!-- PARTICLES -->
+<div class="particles-container" id="particles"></div>
+
+
+<!-- MUSIC BUTTON -->
+<button id="musicToggle" class="music-toggle">
+<i class="fas fa-volume-up"></i>
+</button>
+
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop preload="auto">
+<source src="1m.mp3" type="audio/mpeg">
+</audio>
+
+
+
+<!-- MAIN -->
+<main class="main-container">
+
+<div class="profile-section">
+
+
+<!-- PROFILE -->
+<div class="profile-header fade-element">
+
+<div class="avatar-ring">
+<div class="avatar">
+<img src="افتاري.jpg">
+</div>
+</div>
+
+<div class="profile-info">
+
+<div class="name-row">
+
+<div class="neon-name-wrapper">
+<h1 class="username">DRYFD</h1>
+</div>
+
+<span class="verified-badge">
+<i class="fas fa-crown"></i>
+</span>
+
+</div>
+
+<p class="bio">Somewhat developed</p>
+
+</div>
+
+</div>
+
+
+
+<!-- SOCIAL -->
+<div class="social-icons fade-element">
+
+<a href="https://discordapp.com/users/274366167093608450"
+class="social-icon"
+target="_blank">
+
+<i class="fab fa-discord"></i>
+
+</a>
+
+
+<a href="https://www.instagram.com/dryfd_"
+class="social-icon"
+target="_blank">
+
+<i class="fab fa-instagram"></i>
+
+</a>
+
+
+<a href="https://www.tiktok.com/@_dryfd"
+class="social-icon"
+target="_blank">
+
+<i class="fab fa-tiktok"></i>
+
+</a>
+
+</div>
+
+
+
+<!-- STATS -->
+<div class="stats-bar fade-element">
+
+<div class="stat-item">
+<i class="fas fa-eye"></i>
+<span id="viewCount">1088</span>
+</div>
+
+<div class="stat-divider"></div>
+
+<div class="stat-item">
+<i class="fas fa-map-pin"></i>
+<span>Always Improving</span>
+</div>
+
+</div>
+
+
+
+<!-- MUSIC PLAYER -->
+<div class="music-player fade-element">
+
+<div class="player-info">
+
+<div class="player-avatar">
+<img src="اغنية.jpg">
+</div>
+
+<div class="player-text">
+
+<span class="track-name">not allowed</span>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="time-row">
+<span id="timeCurrent">0:00</span>
+<span id="timeTotal">2:44</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="player-controls">
+
+<button class="ctrl-btn">
+<i class="fas fa-step-backward"></i>
+</button>
+
+<button class="ctrl-btn play-btn" id="playPauseBtn">
+<i class="fas fa-pause" id="playPauseIcon"></i>
+</button>
+
+<button class="ctrl-btn">
+<i class="fas fa-step-forward"></i>
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+</main>
+
+
+
+<script src="script.js"></script>
+
+
+<script>
+
+/* تشغيل الفيديو بالخلفية */
+
+function startVideos(){
+
+document.querySelectorAll("video").forEach(v=>{
+
+v.muted=true
+
+v.play().catch(()=>{})
+
+})
+
+}
+
+document.addEventListener("DOMContentLoaded",startVideos)
+
+document.addEventListener("click",startVideos,{once:true})
+
+</script>
+
+
+</body>
+</html>

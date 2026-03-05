@@ -1,0 +1,963 @@
+/* ============================================
+   Bio Page — Style Sheet
+   Flat Dark Layout, White Neon Glow Theme
+   Premium Enhanced Version
+   ============================================ */
+
+/* ---- Reset & Base ---- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Tajawal', 'Inter', sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100vw;
+    overflow-x: hidden;
+    background: #000000;
+    color: #ffffff;
+    direction: rtl;
+    cursor: default;
+}
+
+/* ---- Background Layer ---- */
+.bg-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 0;
+}
+
+.bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.6) saturate(1.1);
+}
+
+/* Dot Matrix Overlay */
+.dot-overlay {
+    display: none;
+}
+
+/* Vignette Effect */
+.bg-layer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ============================================
+   CURSOR GLOW
+   ============================================ */
+.cursor-glow {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 3;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.cursor-glow.active {
+    opacity: 1;
+}
+
+/* ============================================
+   SPLASH SCREEN
+   ============================================ */
+.splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    overflow: hidden;
+}
+
+.splash-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(18px) brightness(0.2);
+    transform: scale(1.1);
+}
+
+/* Scanline overlay on splash */
+.splash::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.08) 2px,
+            rgba(0, 0, 0, 0.08) 4px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.splash-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    animation: textPulse 3s ease-in-out infinite;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+    text-transform: lowercase;
+}
+
+.splash-text:hover {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.4), 0 0 50px rgba(255, 255, 255, 0.1);
+    letter-spacing: 5px;
+}
+
+@keyframes textPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   FLOATING PARTICLES (Snow Effect)
+   ============================================ */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 50;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4), 0 0 12px rgba(255, 255, 255, 0.15);
+    animation: floatDown linear infinite;
+}
+
+.particle.glow {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes floatDown {
+    0% {
+        transform: translateY(-10vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(50vh) translateX(20px) rotate(180deg);
+    }
+
+    90% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(110vh) translateX(-10px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   MUSIC TOGGLE (Volume Icon)
+   ============================================ */
+.music-toggle {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.music-toggle.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.music-toggle:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.music-toggle.playing i {
+    animation: musicBounce 0.6s ease infinite alternate;
+}
+
+.music-toggle.muted {
+    opacity: 0.3;
+}
+
+.music-toggle.muted i {
+    animation: none;
+}
+
+@keyframes musicBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
+.main-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 3rem 2rem;
+}
+
+.profile-section {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+}
+
+/* ---- Profile Header (Avatar + Info) ---- */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.avatar-ring {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.25));
+    background-size: 300% 300%;
+    animation: ringGlow 5s ease infinite;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.08), 0 0 30px rgba(255, 255, 255, 0.03);
+    transition: all 0.4s ease;
+}
+
+.avatar-ring:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(255, 255, 255, 0.06);
+    transform: scale(1.05);
+}
+
+@keyframes ringGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #111;
+    overflow: hidden;
+    animation: avatarFloat 6s ease-in-out infinite;
+}
+
+@keyframes avatarFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: filter 0.4s ease;
+}
+
+.avatar:hover img {
+    filter: brightness(1.15);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.username {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-shadow:
+        0 0 4px rgba(255, 255, 255, 0.9),
+        0 0 8px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.4),
+        0 0 30px rgba(255, 255, 255, 0.3),
+        0 0 50px rgba(255, 255, 255, 0.15);
+    animation: neonPulse 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes neonPulse {
+
+    0%,
+    100% {
+        text-shadow:
+            0 0 4px rgba(255, 255, 255, 0.9),
+            0 0 8px rgba(255, 255, 255, 0.6),
+            0 0 15px rgba(255, 255, 255, 0.4),
+            0 0 30px rgba(255, 255, 255, 0.3),
+            0 0 50px rgba(255, 255, 255, 0.15);
+        opacity: 1;
+    }
+
+    50% {
+        text-shadow:
+            0 0 2px rgba(255, 255, 255, 0.7),
+            0 0 5px rgba(255, 255, 255, 0.5),
+            0 0 10px rgba(255, 255, 255, 0.3),
+            0 0 20px rgba(255, 255, 255, 0.15),
+            0 0 35px rgba(255, 255, 255, 0.08);
+        opacity: 0.94;
+    }
+}
+
+.neon-name-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Floating particles around the name */
+.name-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #ffffff, 0 0 12px rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    animation: particleFloat 4s ease-in-out infinite;
+}
+
+.name-particle:nth-child(2) {
+    top: -8px;
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 3.5s;
+}
+
+.name-particle:nth-child(3) {
+    top: 50%;
+    left: -10px;
+    animation-delay: 0.5s;
+    animation-duration: 4.2s;
+}
+
+.name-particle:nth-child(4) {
+    top: -12px;
+    left: 40%;
+    animation-delay: 1s;
+    animation-duration: 3.8s;
+}
+
+.name-particle:nth-child(5) {
+    top: 100%;
+    left: 60%;
+    animation-delay: 1.5s;
+    animation-duration: 4.5s;
+}
+
+.name-particle:nth-child(6) {
+    top: -6px;
+    left: 80%;
+    animation-delay: 2s;
+    animation-duration: 3.2s;
+}
+
+.name-particle:nth-child(7) {
+    top: 110%;
+    left: 25%;
+    animation-delay: 2.5s;
+    animation-duration: 4s;
+}
+
+.name-particle:nth-child(8) {
+    top: 50%;
+    right: -10px;
+    animation-delay: 3s;
+    animation-duration: 3.6s;
+}
+
+.name-particle:nth-child(9) {
+    top: 110%;
+    left: 90%;
+    animation-delay: 0.8s;
+    animation-duration: 4.3s;
+}
+
+@keyframes particleFloat {
+
+    0%,
+    100% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+
+    20% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: translateY(-18px) scale(0.8);
+    }
+
+    80% {
+        opacity: 0.3;
+        transform: translateY(-28px) scale(0.4);
+    }
+}
+
+.username:hover {
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.95),
+        0 0 12px rgba(255, 255, 255, 0.7),
+        0 0 25px rgba(255, 255, 255, 0.5),
+        0 0 45px rgba(255, 255, 255, 0.3),
+        0 0 70px rgba(255, 255, 255, 0.15);
+}
+
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #111111;
+    color: #ffffff;
+    font-size: 0.55rem;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6), 0 0 4px rgba(255, 255, 255, 0.08);
+    animation: badgeGlow 2s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.verified-badge:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.15);
+    transform: scale(1.15) rotate(10deg);
+}
+
+@keyframes badgeGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.6), 0 0 3px rgba(255, 255, 255, 0.06);
+    }
+
+    50% {
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.8), 0 0 6px rgba(255, 255, 255, 0.12);
+    }
+}
+
+.bio {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+/* Divider line */
+.divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    margin: 0;
+}
+
+/* ============================================
+   STATS BAR
+   ============================================ */
+.stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.15rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.08), 0 0 20px rgba(255, 255, 255, 0.03);
+    direction: ltr;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.stat-item i {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.stat-item span {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.95);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.stat-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================
+   SOCIAL ICONS ROW
+   ============================================ */
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.25rem 0;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.25), 0 0 25px rgba(255, 255, 255, 0.1), 0 0 40px rgba(255, 255, 255, 0.05);
+    animation: iconNeonPulse 3s ease-in-out infinite;
+}
+
+/* Shimmer effect on hover */
+.social-icon::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.06) 50%, transparent 60%);
+    transform: rotate(45deg) translateY(100%);
+    transition: transform 0.6s ease;
+}
+
+.social-icon:hover::after {
+    transform: rotate(45deg) translateY(-100%);
+}
+
+.social-icon:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.15), 0 6px 20px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes iconNeonPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.25), 0 0 25px rgba(255, 255, 255, 0.1), 0 0 40px rgba(255, 255, 255, 0.05);
+    }
+
+    50% {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 35px rgba(255, 255, 255, 0.2), 0 0 50px rgba(255, 255, 255, 0.08);
+    }
+}
+
+.social-icon:active {
+    transform: scale(0.92);
+}
+
+#icon-discord:hover {
+    color: #5865F2;
+    border-color: rgba(88, 101, 242, 0.5);
+    box-shadow: 0 0 10px rgba(88, 101, 242, 0.5), 0 0 25px rgba(88, 101, 242, 0.2), 0 0 50px rgba(88, 101, 242, 0.1);
+}
+
+#icon-instagram:hover {
+    color: #E1306C;
+    border-color: rgba(225, 48, 108, 0.5);
+    box-shadow: 0 0 10px rgba(225, 48, 108, 0.5), 0 0 25px rgba(225, 48, 108, 0.2), 0 0 50px rgba(225, 48, 108, 0.1);
+}
+
+#icon-tiktok:hover {
+    color: #ff0050;
+    border-color: rgba(255, 0, 80, 0.5);
+    box-shadow: 0 0 10px rgba(255, 0, 80, 0.5), 0 0 25px rgba(255, 0, 80, 0.2), 0 0 50px rgba(255, 0, 80, 0.1);
+}
+
+/* ============================================
+   MUSIC PLAYER
+   ============================================ */
+.music-player {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1rem 1.15rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.music-player:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.player-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #111;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.player-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.player-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.track-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: height 0.2s ease;
+}
+
+.progress-bar:hover {
+    height: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.7));
+    border-radius: 3px;
+    transition: width 0.3s linear;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+}
+
+.ctrl-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    padding: 0.4rem;
+}
+
+.ctrl-btn:hover {
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+    transform: scale(1.15);
+}
+
+.play-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+    transform: scale(1.1);
+}
+
+/* ============================================
+   FADE-IN ANIMATIONS
+   ============================================ */
+.fade-element {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-element.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   MEDIA QUERIES — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+    .main-container {
+        padding: 2rem 1.25rem;
+    }
+
+    .profile-section {
+        gap: 1.75rem;
+    }
+
+    .avatar-ring {
+        width: 95px;
+        height: 95px;
+    }
+
+    .username {
+        font-size: 1.3rem;
+    }
+
+    .bio {
+        font-size: 0.95rem;
+    }
+
+    .social-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 1.3rem;
+    }
+
+    .music-toggle {
+        top: 1rem;
+        left: 1rem;
+    }
+
+    .cursor-glow {
+        display: none;
+    }
+}
+
+@media (max-width: 375px) {
+    .main-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .avatar-ring {
+        width: 85px;
+        height: 85px;
+    }
+
+    .username {
+        font-size: 1.15rem;
+    }
+
+    .social-icons {
+        gap: 0.85rem;
+    }
+
+    .social-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+        border-radius: 14px;
+    }
+
+    .player-avatar {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-container {
+        padding: 1rem;
+        align-items: flex-start;
+    }
+
+    .profile-section {
+        gap: 1rem;
+    }
+
+    .cursor-glow {
+        display: none;
+    }
+}
